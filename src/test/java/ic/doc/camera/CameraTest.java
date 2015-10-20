@@ -63,6 +63,37 @@ public class CameraTest {
         camera.pressShutter();
     }
 
-    
+    @Test
+    public void switchingCameraOffDoesNotPowerDownSensorIfDataBeingWritten() {
+
+        context.checking(new Expectations(){{
+            exactly(1).of(sensor).powerUp();
+            exactly(1).of(sensor).readData();
+            exactly(1).of(mCard).write(with(any(byte[].class)));
+            never(sensor).powerDown();
+        }});
+
+        camera.powerOn();
+        camera.pressShutter();
+        camera.powerOff();
+
+    }
+
+    @Test
+    public void poweringSensorDownAfterDataWritingComplete() {
+
+        context.checking(new Expectations(){{
+            exactly(1).of(sensor).powerUp();
+            exactly(1).of(sensor).readData();
+            exactly(1).of(mCard).write(with(any(byte[].class)));
+            exactly(1).of(sensor).powerDown();
+        }});
+
+        camera.powerOn();
+        camera.pressShutter();
+        camera.writeComplete();
+        camera.powerOff();
+
+    }
 
 }
