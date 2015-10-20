@@ -32,13 +32,16 @@ public class Camera implements WriteListener {
     public void powerOff() {
         if (writingDone) {
             sensor.powerDown();
-            isOn = false;
         }
+        isOn = false;
     }
 
     @Override
     public void writeComplete() {
         writingDone = true;
+        if (!isOn) {
+            sensor.powerDown();
+        }
     }
 
  

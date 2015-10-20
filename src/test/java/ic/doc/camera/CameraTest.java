@@ -91,8 +91,8 @@ public class CameraTest {
 
         camera.powerOn();
         camera.pressShutter();
-        camera.writeComplete();
         camera.powerOff();
+        camera.writeComplete();
 
     }
 
